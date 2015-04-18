@@ -24,11 +24,11 @@ RSpec.describe EmailAddressesController, type: :controller do
   # EmailAddress. As you add validations to EmailAddress, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {address: 'Address@example.com', person_id: 1}
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {address: nil, person_id: nil}
   }
 
   # This should return the minimal set of values that should be in the session
@@ -69,6 +69,10 @@ RSpec.describe EmailAddressesController, type: :controller do
 
   describe "POST #create" do
     context "with valid params" do
+
+      let(:andrew) {Person.create(first_name: 'Andrew', last_name: 'Carmer')}
+      let(:valid_attributes) {{address: 'carmerandrew@gmail.com', person_id: andrew.id}}
+
       it "creates a new EmailAddress" do
         expect {
           post :create, {:email_address => valid_attributes}, valid_session
@@ -81,9 +85,9 @@ RSpec.describe EmailAddressesController, type: :controller do
         expect(assigns(:email_address)).to be_persisted
       end
 
-      it "redirects to the created email_address" do
+      it "redirects to the created email_address' person" do
         post :create, {:email_address => valid_attributes}, valid_session
-        expect(response).to redirect_to(EmailAddress.last)
+        expect(response).to redirect_to(andrew)
       end
     end
 
@@ -102,15 +106,19 @@ RSpec.describe EmailAddressesController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
+
+      let(:person) {Person.create(first_name: 'Andrew', last_name: 'Carmer')}
+      let(:valid_attributes) {{address: 'carm@gmail.com', person_id: person.id}}
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {address: 'NewAddress@example.com', person_id: person.id}
       }
 
       it "updates the requested email_address" do
         email_address = EmailAddress.create! valid_attributes
         put :update, {:id => email_address.to_param, :email_address => new_attributes}, valid_session
         email_address.reload
-        skip("Add assertions for updated state")
+        expect(email_address.address).to eq('NewAddress@example.com')
+        expect(email_address.person_id).to eq(person.id)
       end
 
       it "assigns the requested email_address as @email_address" do
