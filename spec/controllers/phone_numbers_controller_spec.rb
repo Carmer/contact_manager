@@ -62,7 +62,7 @@ RSpec.describe PhoneNumbersController, type: :controller do
         expect(assigns(:phone_number)).to be_persisted
       end
 
-      it "redirects to the created phone_number" do
+      it "redirects to the phone numbers person" do
         alice = Person.create(first_name: 'Alice', last_name: 'Smith')
         valid_attributes= {number: '555-8888', person_id: alice.id}
         post :create, {:phone_number => valid_attributes}, valid_session
@@ -86,8 +86,9 @@ RSpec.describe PhoneNumbersController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:bob) { Person.create(first_name: 'Bob', last_name: 'Jones') }
-      let(:valid_attributes) {{ number: '555*5678', person_id: bob.id}}
+      let(:valid_attributes) {{ number: '555-5678', person_id: bob.id}}
       let(:new_attributes) {{number: 'MyNewString', person_id: bob.id}}
+
       it "updates the requested phone_number" do
         phone_number = PhoneNumber.create! valid_attributes
         put :update, {:id => phone_number.to_param, :phone_number => new_attributes}, valid_session
@@ -128,6 +129,9 @@ RSpec.describe PhoneNumbersController, type: :controller do
   end
 
   describe "DELETE #destroy" do
+    let(:andrew)  {Person.create(first_name: 'Andrew', last_name: 'Carmer')}
+    let(:valid_attributes) {{number: '555-5555', person_id: andrew.id }}
+
     it "destroys the requested phone_number" do
       phone_number = PhoneNumber.create! valid_attributes
       expect {
@@ -135,10 +139,10 @@ RSpec.describe PhoneNumbersController, type: :controller do
       }.to change(PhoneNumber, :count).by(-1)
     end
 
-    it "redirects to the phone_numbers list" do
+    it "redirects to the phone_numbers person" do
       phone_number = PhoneNumber.create! valid_attributes
       delete :destroy, {:id => phone_number.to_param}, valid_session
-      expect(response).to redirect_to(phone_numbers_url)
+      expect(response).to redirect_to(andrew)
     end
   end
 
