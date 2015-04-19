@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :companies
   resources :email_addresses
-  resources :phone_numbers
+  resources :phone_numbers, except: [:index, :show]
   resources :people
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
