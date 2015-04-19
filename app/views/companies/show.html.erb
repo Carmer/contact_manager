@@ -5,5 +5,22 @@
   <%= @company.name %>
 </p>
 
-<%= link_to 'Edit', edit_company_path(@company) %> |
+<h3>Phone Numbers</h3>
+<ul>
+  <% @company.phone_numbers.each do |phone| %>
+  <li><%= phone.number %><%= link_to('edit', edit_phone_number_path(phone)) %><%= link_to('delete', phone_number_path(phone), method: :delete, data: {confirm: 'Are you sure?'}) %></li>
+  <% end %>
+</ul>
+
+h3>Email Addresses</h3>
+<ul>
+  <% @company.email_addresses.each do |email_address| %>
+  <li><%= email_address.address %></li>
+  <% end %>
+</ul>
+
+
+<%= link_to 'Add Phone Number', new_phone_number_path(contact_id: @company.id, contact_type: 'Company') %>
+<%= link_to 'Add Email Address', new_email_address_path(contact_id: @company.id, contact_type: 'Company') %>
+<%= link_to 'Edit', edit_company_path(@company) %>
 <%= link_to 'Back', companies_path %>

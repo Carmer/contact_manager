@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Person, type: :model do
-  let(:person) do
-    Person.new(first_name: "Alice", last_name: 'Smith')
-  end
+  let(:person)  { Person.new(first_name: "Alice", last_name: 'Smith') }
+
   it "is invalid without a first_name" do
     person.first_name = nil
     expect(person).not_to be_valid
@@ -23,5 +22,15 @@ RSpec.describe Person, type: :model do
 
   it "has an array of email_addresses" do
     expect(person.email_addresses).to eq([])
+  end
+
+  it 'responds with its created phone numbers' do
+    person.phone_numbers.build(number: '555-8888')
+    expect(person.phone_numbers.map(&:number)).to eq(['555-8888'])
+  end
+
+  it 'responds with its created email addresses' do
+    person.email_addresses.build(address: 'me@example.com')
+    expect(person.email_addresses.map(&:address)).to eq(['me@example.com'])
   end
 end
