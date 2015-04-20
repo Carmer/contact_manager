@@ -60,18 +60,18 @@ describe 'the company view', type: :feature do
       phone = company.phone_numbers.first
       old_number = phone.number
 
-      first(:link, 'delete').click
+      first(:link, 'delete number').click
       expect(current_path).to eq(company_path(company))
       expect(page).to_not have_content(old_number)
     end
 
     it 'deletes all numbers and they are really gone from db' do
-      first(:link, 'delete').click
+      first(:link, 'delete number').click
       expect(current_path).to eq(company_path(company))
       expect(page).to have_content('delete')
-      first(:link, 'delete').click
+      first(:link, 'delete number').click
       expect(current_path).to eq(company_path(company))
-      expect(page).to_not have_content('delete')
+      expect(page).to_not have_content('delete number')
     end
 
     it 'has email addresses' do
